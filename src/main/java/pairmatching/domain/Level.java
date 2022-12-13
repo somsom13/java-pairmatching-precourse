@@ -42,5 +42,4 @@ public enum Level {
                 .findAny()
                 .orElseThrow(() -> new IllegalArgumentException(ErrorString.WRONG_OPTION.print()));
     }
-    // 메뉴 조회
 }

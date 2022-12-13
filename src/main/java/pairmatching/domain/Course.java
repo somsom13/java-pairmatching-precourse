@@ -30,6 +30,4 @@ public enum Course {
                 .findAny()
                 .orElseThrow(() -> new IllegalArgumentException(ErrorString.WRONG_OPTION.print()));
     }
-
-    // 코스 이름 조회
 }

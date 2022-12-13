@@ -1,6 +1,9 @@
 package pairmatching.controller;
 
-import java.util.StringTokenizer;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+import pairmatching.constant.ErrorString;
 import pairmatching.domain.FunctionMenu;
 import pairmatching.domain.Matching;
 import pairmatching.view.InputView;
@@ -24,35 +27,61 @@ public class PairMatchingController {
     }
 
     private FunctionMenu selectMenu() {
-        return FunctionMenu.findRequestedMenu(inputView.chooseFunctionMenu());
+        while (true) {
+            try {
+                return FunctionMenu.findRequestedMenu(inputView.chooseFunctionMenu());
+            } catch (IllegalArgumentException wrongFunctionMenuException) {
+                System.out.println(wrongFunctionMenuException.getMessage());
+            }
+        }
     }
 
     private void doFunction(FunctionMenu menu) {
         if (menu == FunctionMenu.MATCHING) {
             outputView.printCourseMenu();
-            String missionInfo = inputView.chooseCourseAndMission(); //여기서 while 문을 사용하자!
+            List<String> missionInfo = chooseMission();
             startPairMatching(missionInfo);
-            printMatchingResult(missionInfo);
+        }
+        if (menu == FunctionMenu.VIEW) {
+            outputView.printCourseMenu();
+            printMatchingResult(chooseMission());
         }
     }
 
-    private void printMatchingResult(String missionInfo) {
-        StringTokenizer tokenizer = new StringTokenizer(missionInfo, ", ");
+    private List<String> chooseMission() {
+        while (true) {
+            try {
+                return readMissionSelection();
+            } catch (IllegalArgumentException wrongMissionInput) {
+                System.out.println(wrongMissionInput.getMessage());
+            }
+        }
+    }
+
+    private List<String> readMissionSelection() {
+        String[] missionInfos = inputView.chooseCourseAndMission().split(", ");
+        if (missionInfos.length != 3) {
+            throw new IllegalArgumentException(ErrorString.WRONG_OPTION.print());
+        }
+        matching.validateCourseLevel(missionInfos[0], missionInfos[1], missionInfos[2]);
+        return Arrays.stream(missionInfos).collect(Collectors.toList());
+    }
+
+    private void printMatchingResult(List<String> missionInfo) {
         try {
-            outputView.printMatchingResult(matching.findPairMatchingResult(tokenizer.nextToken(), tokenizer.nextToken(),
-                    tokenizer.nextToken()));
+            outputView.printMatchingResult(matching.findPairMatchingResult(missionInfo.get(0),
+                    missionInfo.get(1), missionInfo.get(2)));
         } catch (IllegalArgumentException noDataException) {
             System.out.println(noDataException.getMessage());
         }
     }
 
-    private void startPairMatching(String missionInfo) {
-        StringTokenizer tokenizer = new StringTokenizer(missionInfo, ", ");
+    private void startPairMatching(List<String> missionInfo) {
         try {
-            matching.provideNewPairMatch(tokenizer.nextToken(), tokenizer.nextToken(), tokenizer.nextToken());
-        } catch (IllegalArgumentException wrongMissionException) {
-            System.out.println(wrongMissionException.getMessage());
-            doFunction(FunctionMenu.MATCHING);
+            matching.provideNewPairMatch(missionInfo.get(0), missionInfo.get(1), missionInfo.get(2));
+        } catch (IllegalArgumentException pairMatchingFailException) {
+            System.out.print(pairMatchingFailException.getMessage());
         }
+        printMatchingResult(missionInfo);
     }
 }

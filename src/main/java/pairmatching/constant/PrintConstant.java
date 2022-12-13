@@ -6,6 +6,7 @@ public class PrintConstant {
     public static final String MISSION = "미션";
     public static final String LEVEL = "레벨";
     public static final String SHORT_DIVISION = " | ";
+    public static final String LEVEL_INDENT = "  - ";
     public static final String PAIR_DELIMITER = " : ";
     public static final String INTRO_WITH_COLUMN = "%s: ";
     public static final String MENU_DELIMITER = ". ";
@@ -16,5 +17,6 @@ public class PrintConstant {
     public static final String MATCHING_RESULT_INTRO = "페어 매칭 결과입니다.";
     public static final String EMPTY_STRING = "";
     public static final String MATCHING_EXIST = "매칭 정보가 있습니다. 다시 매칭하시겠습니까?";
+    public static final String INITIALIZATION = "초기화 되었습니다.";
 
 }

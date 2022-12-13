@@ -33,6 +33,10 @@ public class Matching {
         return matchingData.isMatchingPairDataAlreadyExist(new MissionDetail(mission, level, course));
     }
 
+    public void clearAllMatchingData() {
+        matchingData.deleteMatchingData();
+    }
+
     private void generatePair(MissionDetail missionDetail, String course) {
         int tryCount = 1;
         while (tryCount <= 3) {

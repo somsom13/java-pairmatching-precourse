@@ -14,15 +14,17 @@ public class PairMatchingController {
     private final InputView inputView;
     private final Matching matching;
     private final OutputView outputView;
+    private boolean isProgramContinuing;
 
     public PairMatchingController() {
         this.inputView = new InputView();
         this.matching = new Matching();
         this.outputView = new OutputView();
+        this.isProgramContinuing = true;
     }
 
     public void start() {
-        while (true) {
+        while (isProgramContinuing) {
             doFunction(selectMenu());
         }
     }
@@ -44,6 +46,13 @@ public class PairMatchingController {
         if (menu == FunctionMenu.VIEW) {
             outputView.printCourseMenu();
             printMatchingResult(chooseMission());
+        }
+        if (menu == FunctionMenu.INITIALIZE) {
+            matching.clearAllMatchingData();
+            outputView.alertInitialization();
+        }
+        if (menu == FunctionMenu.QUIT) {
+            isProgramContinuing = false;
         }
     }
 

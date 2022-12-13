@@ -2,7 +2,6 @@ package pairmatching.view;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.StringJoiner;
 import java.util.stream.Collectors;
 import pairmatching.constant.PrintConstant;
 import pairmatching.domain.Course;
@@ -28,6 +27,10 @@ public class OutputView {
         System.out.println(PrintConstant.MATCHING_EXIST);
     }
 
+    public void alertInitialization() {
+        System.out.println(PrintConstant.INITIALIZATION);
+    }
+
     private void printEachPair(List<String> pair) {
         String pairResult = pair.stream()
                 .collect(Collectors.joining(PrintConstant.PAIR_DELIMITER));
@@ -48,7 +51,7 @@ public class OutputView {
     }
 
     private void printEachLevel(Level level) {
-        System.out.printf(PrintConstant.INTRO_WITH_COLUMN, level.getName());
+        System.out.printf(PrintConstant.LEVEL_INDENT + PrintConstant.INTRO_WITH_COLUMN, level.getName());
         printWithShortDivision(level.getMissions());
     }
 

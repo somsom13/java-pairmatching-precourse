@@ -6,7 +6,7 @@ import java.util.Map;
 import pairmatching.constant.ErrorString;
 
 public class MatchingData {
-    private Map<MissionDetail, MissionPair> matchingData; // 미션 디테일 - 페어 정보 저장
+    private Map<MissionDetail, MissionPair> matchingData;
 
     public MatchingData() {
         this.matchingData = new HashMap<>();
@@ -30,6 +30,10 @@ public class MatchingData {
 
     public boolean isMatchingPairDataAlreadyExist(MissionDetail missionDetail) {
         return matchingData.containsKey(missionDetail);
+    }
+
+    public void deleteMatchingData() {
+        matchingData.clear();
     }
 
     private void setNewPairData(MissionDetail mission, List<Pair> newPair) {

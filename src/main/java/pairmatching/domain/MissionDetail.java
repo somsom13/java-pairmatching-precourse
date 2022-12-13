@@ -30,6 +30,14 @@ public class MissionDetail {
         return Objects.hash(missionName, level, course);
     }
 
+    public boolean isSameLevel(String level) {
+        return this.level.equals(level);
+    }
+
+    public String getLevel() {
+        return level;
+    }
+
     private boolean isSameMission(MissionDetail mission) {
         return mission.missionName.equals(this.missionName)
                 && mission.level.equals(this.level)

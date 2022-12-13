@@ -9,7 +9,6 @@ public class Matching {
     private final Crew backendCrew;
     private final Crew frontendCrew;
 
-    //입력받은게 모든 검증에 통과한다면, MatchingDetail 을 만들어서 matchingData 를 찾음
     public Matching() {
         this.matchingData = new MatchingData();
         this.backendCrew = new Crew(Course.BACKEND.getEngName());
@@ -17,7 +16,8 @@ public class Matching {
     }
 
     public void provideNewPairMatch(String course, String level, String mission) throws IllegalArgumentException {
-        generatePair(mission, level, course);
+        MissionDetail missionDetail = new MissionDetail(mission, level, course);
+        generatePair(missionDetail, course);
     }
 
     public List<List<String>> findPairMatchingResult(String course, String level, String mission) throws IllegalArgumentException {
@@ -29,10 +29,14 @@ public class Matching {
         Level.validateMissionInLevel(level, mission);
     }
 
-    private void generatePair(String mission, String level, String course) {
+    public boolean isSameMissionPairExist(String course, String level, String mission) {
+        return matchingData.isMatchingPairDataAlreadyExist(new MissionDetail(mission, level, course));
+    }
+
+    private void generatePair(MissionDetail missionDetail, String course) {
         int tryCount = 1;
         while (tryCount <= 3) {
-            if (matchingData.isMatchAvailable(new MissionDetail(mission, level, course), generateNewMissionPair(course))) {
+            if (matchingData.isMatchAvailable(missionDetail, generateNewMissionPair(course))) {
                 return;
             }
             tryCount++;

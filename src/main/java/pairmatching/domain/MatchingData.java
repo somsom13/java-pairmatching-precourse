@@ -28,12 +28,14 @@ public class MatchingData {
         throw new IllegalArgumentException(ErrorString.NO_MATCH_DATA.print());
     }
 
+    public boolean isMatchingPairDataAlreadyExist(MissionDetail missionDetail) {
+        return matchingData.containsKey(missionDetail);
+    }
+
     private void setNewPairData(MissionDetail mission, List<Pair> newPair) {
         matchingData.put(mission, new MissionPair(newPair));
     }
 
-    //일단 중복 검사
-    //추가 가능할 때, 새롭게 넣어준다
     private boolean isPairAvailableInSameLevel(String level, List<Pair> newPair) {
         long duplicateCount = matchingData.entrySet()
                 .stream()

@@ -24,6 +24,10 @@ public class OutputView {
         System.out.println(PrintConstant.EMPTY_STRING);
     }
 
+    public void alertMatchingResultExistence() {
+        System.out.println(PrintConstant.MATCHING_EXIST);
+    }
+
     private void printEachPair(List<String> pair) {
         String pairResult = pair.stream()
                 .collect(Collectors.joining(PrintConstant.PAIR_DELIMITER));

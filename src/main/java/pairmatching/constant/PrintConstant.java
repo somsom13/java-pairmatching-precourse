@@ -15,5 +15,6 @@ public class PrintConstant {
     public static final String EXAMPLE = "ex) ";
     public static final String MATCHING_RESULT_INTRO = "페어 매칭 결과입니다.";
     public static final String EMPTY_STRING = "";
+    public static final String MATCHING_EXIST = "매칭 정보가 있습니다. 다시 매칭하시겠습니까?";
 
 }

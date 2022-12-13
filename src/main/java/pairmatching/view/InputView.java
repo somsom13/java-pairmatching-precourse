@@ -2,12 +2,15 @@ package pairmatching.view;
 
 import camp.nextstep.edu.missionutils.Console;
 import java.util.Arrays;
+import java.util.List;
 import java.util.StringJoiner;
+import java.util.stream.Collectors;
 import pairmatching.constant.ErrorString;
 import pairmatching.constant.PrintConstant;
 import pairmatching.domain.Course;
 import pairmatching.domain.FunctionMenu;
 import pairmatching.domain.Level;
+import pairmatching.domain.Rematch;
 
 public class InputView {
     public InputView() {
@@ -27,6 +30,14 @@ public class InputView {
                 System.out.println(formatException.getMessage());
             }
         }
+    }
+
+    public String chooseRematch() {
+        List<String> rematchMenu = Arrays.stream(Rematch.values())
+                .map(Rematch::getMessage)
+                .collect(Collectors.toList());
+        printWithShortDivision(rematchMenu);
+        return Console.readLine();
     }
 
     private String readMissionChoose(String input) {
@@ -62,6 +73,11 @@ public class InputView {
             return;
         }
         throw new IllegalArgumentException(ErrorString.WRONG_OPTION_DELIMITER.print());
+    }
+
+    private void printWithShortDivision(List<String> options) {
+        String joinedWithDelimiter = String.join(PrintConstant.SHORT_DIVISION, options);
+        System.out.println(joinedWithDelimiter);
     }
 
 }

@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 import pairmatching.constant.ErrorString;
 import pairmatching.domain.FunctionMenu;
 import pairmatching.domain.Matching;
+import pairmatching.domain.Rematch;
 import pairmatching.view.InputView;
 import pairmatching.view.OutputView;
 
@@ -38,14 +39,18 @@ public class PairMatchingController {
 
     private void doFunction(FunctionMenu menu) {
         if (menu == FunctionMenu.MATCHING) {
-            outputView.printCourseMenu();
-            List<String> missionInfo = chooseMission();
-            startPairMatching(missionInfo);
+            processMatchingFunction();
         }
         if (menu == FunctionMenu.VIEW) {
             outputView.printCourseMenu();
             printMatchingResult(chooseMission());
         }
+    }
+
+    private void processMatchingFunction() {
+        outputView.printCourseMenu();
+        List<String> missionInfo = chooseMission();
+        checkMatchingExistence(missionInfo);
     }
 
     private List<String> chooseMission() {
@@ -83,5 +88,33 @@ public class PairMatchingController {
             System.out.print(pairMatchingFailException.getMessage());
         }
         printMatchingResult(missionInfo);
+    }
+
+    private void checkMatchingExistence(List<String> missionInfo) {
+        if (matching.isSameMissionPairExist(missionInfo.get(0), missionInfo.get(1), missionInfo.get(2))) {
+            requestRematch(missionInfo);
+            return;
+        }
+        startPairMatching(missionInfo);
+    }
+
+    private void requestRematch(List<String> missionInfo) {
+        outputView.alertMatchingResultExistence();
+        if (isRematchRequested()) {
+            startPairMatching(missionInfo);
+            return;
+        }
+        processMatchingFunction();
+    }
+
+    private boolean isRematchRequested() {
+        while (true) {
+            try {
+                return Rematch.isRematch(inputView.chooseRematch());
+            } catch (IllegalArgumentException wrongRematchInput) {
+                System.out.println(ErrorString.WRONG_REMATCH.print());
+            }
+
+        }
     }
 }

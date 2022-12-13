@@ -3,6 +3,7 @@ package pairmatching.domain;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import pairmatching.constant.ErrorString;
 
 public class MatchingData {
     private Map<MissionDetail, MissionPair> matchingData; // 미션 디테일 - 페어 정보 저장
@@ -17,14 +18,14 @@ public class MatchingData {
             return true;
         }
         return false;
-//        if (matchingData.containsKey(mission)) { //같은 미션이 아니라 같은 level 에 대해서 해야한다
-//            MissionPair missionPair = matchingData.get(mission);
-//            if (!missionPair.isPairAvailable(newPair)) {
-//                return false;
-//            }
-//        }
-//        setNewPairData(mission, newPair); //contain 안되어도 일단 같은 레벨이랑 비교 -> 추가 가능해야 등록한다!
-//        return true;
+    }
+
+    public List<List<String>> findMatchingPairData(MissionDetail missionDetail) throws IllegalArgumentException {
+        if (matchingData.containsKey(missionDetail)) {
+            return matchingData.get(missionDetail)
+                    .findMissionPairCrews();
+        }
+        throw new IllegalArgumentException(ErrorString.NO_MATCH_DATA.print());
     }
 
     private void setNewPairData(MissionDetail mission, List<Pair> newPair) {

@@ -8,27 +8,38 @@ public class Matching {
     private final MatchingData matchingData;
     private final Crew backendCrew;
     private final Crew frontendCrew;
-    private boolean isPairGenerationSuccess;
+    private boolean isGenerationSuccess;
 
     //입력받은게 모든 검증에 통과한다면, MatchingDetail 을 만들어서 matchingData 를 찾음
     public Matching() {
         this.matchingData = new MatchingData();
         this.backendCrew = new Crew(Course.BACKEND.getEngName());
         this.frontendCrew = new Crew(Course.FRONTEND.getEngName());
-        this.isPairGenerationSuccess = false;
+        this.isGenerationSuccess = false;
     }
 
-    public void provideNewPairMatch(String mission, String level, String course) throws IllegalArgumentException {
+    public void provideNewPairMatch(String course, String level, String mission) throws IllegalArgumentException {
         Course.validateCourseName(course);
         Level.validateMissionInLevel(level, mission);
-        generatePair(mission, level, course);
+        try {
+            generatePair(mission, level, course);
+        } catch (IllegalArgumentException pairGenerationException) {
+            System.out.println(pairGenerationException.getMessage());
+            isGenerationSuccess = false;
+        }
+    }
+
+    public List<List<String>> findPairMatchingResult(String course, String level, String mission) throws IllegalArgumentException {
+        Course.validateCourseName(course);
+        Level.validateMissionInLevel(level, mission);
+        return matchingData.findMatchingPairData(new MissionDetail(mission, level, course));
     }
 
     private void generatePair(String mission, String level, String course) {
         int tryCount = 1;
         while (tryCount <= 3) {
             if (matchingData.isMatchAvailable(new MissionDetail(mission, level, course), generateNewMissionPair(course))) {
-                isPairGenerationSuccess = true;
+                isGenerationSuccess = true;
                 return;
             }
             tryCount++;

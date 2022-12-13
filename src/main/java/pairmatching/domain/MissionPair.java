@@ -1,6 +1,7 @@
 package pairmatching.domain;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class MissionPair {
     private List<Pair> missionPairs;
@@ -17,6 +18,12 @@ public class MissionPair {
                 .filter(this::isNotDuplicatePair)
                 .count();
         return availablePairCount == newPairs.size();
+    }
+
+    public List<List<String>> findMissionPairCrews() {
+        return missionPairs.stream()
+                .map(Pair::getPairInfo)
+                .collect(Collectors.toList());
     }
 
     private boolean isNotDuplicatePair(Pair newPair) {
